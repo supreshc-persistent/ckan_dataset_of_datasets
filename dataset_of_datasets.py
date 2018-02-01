@@ -76,7 +76,6 @@ if len(resources) == 0:
     post_dict  = urllib.quote(json.dumps(post_dict))
     r = requests.post('http://127.0.0.1:5000/api/3/action/datastore_create',data=post_dict,headers={'X-CKAN-API-Key':ckan_api_key,'Content-type':'application/x-www-form-urlencoded'})
     result = r.json()
-    print result
 else:
     res_id = resources[0]['id']
     #update data to the existing resource
@@ -84,6 +83,7 @@ else:
     records = []
     for site_package in site_packages:
         record_data = {}
+
         for key in dataset_fields:
             if key in site_package or key == 'tag_string':
                 if key == 'tag_string':
@@ -98,7 +98,7 @@ else:
             else:
                 record_data[dataset_fields[key]] = ''
         records.append(record_data)
-    #print records
+
     post_dict = {'resource_id':res_id,'records':records}
     post_dict  = urllib.quote(json.dumps(post_dict))
     r = requests.post('http://127.0.0.1:5000/api/3/action/datastore_upsert',data=post_dict,headers={'X-CKAN-API-Key':ckan_api_key,'Content-type':'application/x-www-form-urlencoded'})
